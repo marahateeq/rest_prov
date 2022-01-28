@@ -113,6 +113,26 @@ class Auth extends ChangeNotifier {
     notifyListeners();
   }
 
+   Future<void> changePassword(String newPassword) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    _token = sharedPreferences.getString("token");
+    final web ='https://identitytoolkit.googleapis.com/v1/accounts:update?key="AIzaSyBKTqF9leJfzJ97v_P2l4J8tI5kJZmh7rg';
+    try {
+      await http.post(
+        Uri.parse(web),
+        body: json.encode(
+          {
+            'idToken': _token,
+            'password': newPassword,
+            'returnSecureToken': true,
+          },
+        ),
+      );
+    } catch (error) {
+      rethrow;
+    }
+  }
+
   Future<void> _autoLogout() async {
     if (_authTimer != null) {
       _authTimer.cancel();
