@@ -207,7 +207,14 @@ class _AuthCardState extends State<AuthCard>
         content: Text(emsg),
         elevation: 15,
         actions: [
-          OutlinedButton(
+          ElevatedButton(
+            style: ButtonStyle(elevation:  MaterialStateProperty.all(8) ,
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                        side: BorderSide(color: Colors.red)
+                    ))
+            ),
             onPressed: () => Navigator.pop(ctx),
             child: const Text(
               'OK',
