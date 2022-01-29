@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rest_prov/models/http_exp.dart';
+import '../models/http_exp.dart';
 
 import 'dart:convert';
 import 'dart:async';
@@ -15,12 +15,9 @@ class Auth extends ChangeNotifier {
   BuildContext context;
 
   bool get isAuth {
-   // notifyListeners();
     return _token != null;
-
+    notifyListeners();
   }
-
-  
 
   String get token {
     if (_exTime != null && _exTime.isAfter(DateTime.now()) && _token != null) {
@@ -36,7 +33,7 @@ class Auth extends ChangeNotifier {
 
   Future<void> _call(String email, String password, String urls) async {
     String url =
-        'https://identitytoolkit.googleapis.com/v1/accounts:$urls?key=AIzaSyBKTqF9leJfzJ97v_P2l4J8tI5kJZmh7rg';
+        'https://identitytoolkit.googleapis.com/v1/accounts:$urls?key=AIzaSyDDq7VrjlKYiADt21yuK9D3z46Tq58IX1M';
     try {
       final res = await http.post(
         Uri.parse(url),
@@ -48,15 +45,14 @@ class Auth extends ChangeNotifier {
       );
 
       final resData = json.decode(res.body);
-
       if (resData['error'] != null) {
-        HttpExp(resData['error']['msg']);
+        throw HttpExp(resData['error']['message']);
       }
       _token = resData['idToken'];
       _userID = resData['localId'];
       _exTime = DateTime.now()
           .add(Duration(seconds: int.parse(resData["expiresIn"])));
-      _autoLogout();
+      _autologout();
       notifyListeners();
 
       final prefs = await SharedPreferences.getInstance();
@@ -75,11 +71,14 @@ class Auth extends ChangeNotifier {
     return _call(email, password, 'signUp');
   }
 
-  Future<void> logIn(String email, String password,) async {
+  Future<void> logIn(
+    String email,
+    String password,
+  ) async {
     _token = null;
 
     return _call(email, password, "signInWithPassword").whenComplete(() {
-      if(_token != null) {}
+      if (token != null) {}
     });
   }
 
@@ -87,14 +86,14 @@ class Auth extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('userData')) return false;
     final Map<String, Object> extData = json.decode(
-        prefs.getString('userData') ); //as Map<String, Object>;
+        prefs.getString('userData') as String); //as Map<String, Object>;
     final expiryDate = DateTime.parse(extData['expiryDate'] as String);
     if (expiryDate.isBefore(DateTime.now())) return false;
     _token = extData['token'] as String;
     _userID = extData['userId'] as String;
     _exTime = expiryDate; //as DateTime;
     notifyListeners();
-    _autoLogout();
+    _autologout();
     return true;
   }
 
@@ -105,7 +104,7 @@ class Auth extends ChangeNotifier {
     _exTime = null;
     if (_authTimer != null) {
       _authTimer.cancel();
-      _authTimer = null ;//as Timer;
+      _authTimer = null as Timer;
     }
     final pref = await SharedPreferences.getInstance();
     pref.clear();
@@ -113,31 +112,13 @@ class Auth extends ChangeNotifier {
     notifyListeners();
   }
 
-   Future<void> changePassword(String newPassword) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    _token = sharedPreferences.getString("token");
-    final web ='https://identitytoolkit.googleapis.com/v1/accounts:update?key="AIzaSyBKTqF9leJfzJ97v_P2l4J8tI5kJZmh7rg';
-    try {
-      await http.post(
-        Uri.parse(web),
-        body: json.encode(
-          {
-            'idToken': _token,
-            'password': newPassword,
-            'returnSecureToken': true,
-          },
-        ),
-      );
-    } catch (error) {
-      rethrow;
-    }
-  }
-
-  Future<void> _autoLogout() async {
+  Future<void> _autologout() async {
     if (_authTimer != null) {
       _authTimer.cancel();
     }
     final timeToExpiry = _exTime.difference(DateTime.now()).inSeconds;
     _authTimer = Timer(Duration(seconds: timeToExpiry), logout);
   }
+
+  
 }

@@ -1,9 +1,9 @@
 class HttpExp implements Exception {
-  final String msg;
-  HttpExp(this.msg);
+  final String message;
+  HttpExp(this.message);
 
   @override
   String toString() {
-    return msg;
+    return message;
   }
 }

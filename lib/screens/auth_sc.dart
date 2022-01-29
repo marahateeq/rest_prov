@@ -1,10 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rest_prov/models/http_exp.dart';
+import '../models/http_exp.dart';
 import 'package:rest_prov/providers/auth.dart';
-
-import 'edit_rest_info.dart';
 
 class AuthSC extends StatelessWidget {
   const AuthSC({Key key}) : super(key: key);
@@ -36,9 +34,9 @@ class AuthSC extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                 /* Flexible(
+                  Flexible(
                     child: Container(
-                      margin: EdgeInsets.only(bottom: 20),
+                      margin: const EdgeInsets.only(bottom: 20),
                       padding:
                           EdgeInsets.symmetric(vertical: 8, horizontal: 90),
                       transform: Matrix4.rotationZ(-11 * pi / 180)
@@ -46,7 +44,7 @@ class AuthSC extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         color: Colors.red,
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             blurRadius: 8,
                             color: Colors.black38,
@@ -54,7 +52,7 @@ class AuthSC extends StatelessWidget {
                           ),
                         ],
                       ),
-                      child: Text(
+                      child: const Text(
                         "MARAH SHOP",
                         style: TextStyle(
                             color: Colors.white,
@@ -63,7 +61,7 @@ class AuthSC extends StatelessWidget {
                             fontWeight: FontWeight.w800),
                       ),
                     ),
-                  ),*/
+                  ),
                   Flexible(
                     flex: dS.width > 600 ? 2 : 1,
                     child: AuthCard(),
@@ -85,7 +83,6 @@ class AuthCard extends StatefulWidget {
   _AuthCardState createState() => _AuthCardState();
 }
 
-
 enum AuthMode { Login, SignUp }
 
 class _AuthCardState extends State<AuthCard>
@@ -96,7 +93,7 @@ class _AuthCardState extends State<AuthCard>
     'email': '',
     'password': '',
   };
-AuthMode _authMode = AuthMode.Login;
+  AuthMode _authMode = AuthMode.Login;
 
   bool _isloading = false;
 
@@ -153,25 +150,38 @@ AuthMode _authMode = AuthMode.Login;
         await Provider.of<Auth>(context, listen: false)
             .signUp(_authdata['email'], _authdata['password'])
             .whenComplete(() {
-
           if (_isloading == false) {
             setState(() {
               _authMode = AuthMode.Login;
             });
           }
-          Navigator.of(context).pushReplacementNamed(EditResInfo.routeName);
         });
       }
     } on HttpExp catch (e) {
-
+      var emsg = 'Authentication failed';
+      if (e.toString().contains('EMAIL_EXISTS')) {
+        emsg = "This email address is already exist!";
+      } else if (e.toString().contains('INVALID_EMAIL')) {
+        emsg = "This is not a valid email!";
+      } else if (e.toString().contains('WEAK_PASSWORD')) {
+        emsg = "This password is too weak!";
+      } else if (e.toString().contains('EMAIL_NOT_FOUND')) {
+        emsg = "Could not find a user with that email!";
+      } else if (e.toString().contains('INVALID_PASSWORD')) {
+        emsg = "Invalid password!";
+      }
+      _showE(emsg);
+    } catch (e) {
+      const emsg = 'Could not authenticate you . Please try again later!';
+      _showE(emsg);
     }
+
     setState(() {
       _isloading = false;
     });
   }
 
   String testmod = 'Log in';
-
   void _switchAuthMode() {
     if (_authMode == AuthMode.Login) {
       setState(() {
@@ -186,6 +196,30 @@ AuthMode _authMode = AuthMode.Login;
       });
       _controller.reverse();
     }
+  }
+
+  void _showE(String emsg) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Erorr Founded'),
+        titleTextStyle: TextStyle(color: Colors.teal),
+        content: Text(emsg),
+        elevation: 15,
+        actions: [
+          OutlinedButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text(
+              'OK',
+              style: TextStyle(fontWeight: FontWeight.w900, fontSize: 20),
+            ),
+          )
+        ],
+        actionsAlignment: MainAxisAlignment.center,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        alignment: Alignment.center,
+      ),
+    );
   }
 
   @override
@@ -212,6 +246,8 @@ AuthMode _authMode = AuthMode.Login;
                 TextFormField(
                   decoration: InputDecoration(labelText: 'E-mail'),
                   keyboardType: TextInputType.emailAddress,
+                  enableSuggestions: false,
+                  autocorrect: false,
                   controller: _emailCon,
                   validator: (val) {
                     if (val.isEmpty || !val.contains('@')) {
@@ -226,6 +262,8 @@ AuthMode _authMode = AuthMode.Login;
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Password'),
                   obscureText: true,
+                  enableSuggestions: false,
+                  autocorrect: false,
                   controller: _passCon,
                   keyboardType: TextInputType.visiblePassword,
                   validator: (val) {
@@ -283,7 +321,7 @@ AuthMode _authMode = AuthMode.Login;
                 TextButton(
                   onPressed: _switchAuthMode,
                   child: Text(
-                      '${testmod == 'Log in' ? 'Create new account' : 'Already have an account '}'),
+                      '${testmod == 'Log in' ? 'Signup' : 'Login '}  Insted '),
                   style: ButtonStyle(
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
