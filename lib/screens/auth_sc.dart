@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import '../models/http_exp.dart';
 import 'package:rest_prov/providers/auth.dart';
 
+import 'edit_rest_info.dart';
+
 class AuthSC extends StatelessWidget {
   const AuthSC({Key key}) : super(key: key);
   static const routeName = '/auth';
@@ -155,7 +157,10 @@ class _AuthCardState extends State<AuthCard>
               _authMode = AuthMode.Login;
             });
           }
+          Navigator.of(context).pushReplacementNamed(
+            EditResInfo.routeName,);
         });
+
       }
     } on HttpExp catch (e) {
       var emsg = 'Authentication failed';

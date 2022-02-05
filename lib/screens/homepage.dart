@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
 
   return  Scaffold(
         appBar: AppBar(
-          title: Text(' hi'),
+          title: Text(' hi', ),
 
         ),
       drawer: MyDrawer(),
@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
                           onTap: ()=> Navigator.of(context).pushNamed(Profile.routeName , //arguments: _restaurant
                           ),
                           child: Image.asset("images/profile.png",
-                            width: dS.width * 0.4,
+                            width: dS.width * 0.3,
 
                             fit : BoxFit.fill ,
                           ),
@@ -76,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                         child: GestureDetector(
                           onTap: ()=> Navigator.of(context).pushNamed(MenuScreen.routeName),
                           child: Image.asset("images/m2.png",
-                            width: dS.width * 0.4,
+                            width: dS.width * 0.3,
                             fit : BoxFit.fill ,
                           ),
                         ),
@@ -107,7 +107,7 @@ class _HomePageState extends State<HomePage> {
                       child: GestureDetector(
                         onTap: ()=> Navigator.of(context).pushNamed(MenuScreen.routeName),
                         child: Image.asset("images/t3.png",
-                          width: dS.width * 0.4,
+                          width: dS.width * 0.3,
 
                           fit : BoxFit.cover ,
                         ),
@@ -133,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                       child: GestureDetector(
                         onTap: ()=> Navigator.of(context).pushNamed(MenuScreen.routeName),
                         child: Image.asset("images/d.png",
-                          width: dS.width * 0.4,
+                          width: dS.width * 0.3,
                           fit : BoxFit.fill ,
                         ),
                       ),
@@ -163,7 +163,7 @@ class _HomePageState extends State<HomePage> {
                       child: GestureDetector(
                         onTap: ()=> Navigator.of(context).pushNamed(MenuScreen.routeName),
                         child: Image.asset("images/n.png",
-                          width: dS.width * 0.4,
+                          width: dS.width * 0.3,
 
                           fit : BoxFit.fill ,
                         ),
@@ -189,7 +189,7 @@ class _HomePageState extends State<HomePage> {
                       child: GestureDetector(
                         onTap: ()=> Navigator.of(context).pushNamed(MenuScreen.routeName),
                         child: Image.asset("images/offer.png",
-                          width: dS.width * 0.4,
+                          width: dS.width * 0.3,
                           fit : BoxFit.fill ,
                         ),
                       ),
@@ -222,7 +222,7 @@ class _HomePageState extends State<HomePage> {
                         onTap: ()=> Navigator.of(context).pushNamed(ManageProductsScreen.routeName , //arguments: _restaurant
                         ),
                         child: Image.asset("images/m77.png",
-                          width: dS.width * 0.4,
+                          width: dS.width * 0.2,
 
                           fit : BoxFit.fill ,
                         ),

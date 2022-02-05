@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rest_prov/providers/product.dart';
 import 'package:rest_prov/providers/products.dart';
+import 'package:rest_prov/screens/manage_products_screen.dart';
 
 class EditProductScreen extends StatefulWidget {
   static const routeName = '/EditProductScreen';
@@ -132,6 +133,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
             )
         );
       }
+      // bn Navigator.of(context).pushNamed(ManageProductsScreen.routeName);
+
     }
     setState(() {
       _isLoading = false;
