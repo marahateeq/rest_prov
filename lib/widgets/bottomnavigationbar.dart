@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rest_prov/screens/homepage.dart';
 import 'package:rest_prov/screens/manage_products_screen.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -23,7 +24,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     } );
 
     if(_selectedIndex == 0){
-      Navigator.of(context).pushReplacementNamed(ManageProductsScreen.routeName);}
+      Navigator.of(context).pushReplacementNamed(HomePage.routeName);}
     if(_selectedIndex == 1){
       Navigator.of(context).pushReplacementNamed("ManageProductsScreen");}
 
@@ -50,7 +51,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
         items: const [
 
-          BottomNavigationBarItem(label : "Rest_Menu",icon: Icon(Icons.restaurant_menu)),
+          BottomNavigationBarItem(label : "HomePage",icon: Icon(Icons.home_filled)),
           BottomNavigationBarItem(label : "Orders",icon: Icon(Icons.shopping_cart_outlined)),
 
         ],

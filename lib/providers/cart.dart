@@ -8,7 +8,7 @@ class CartItem{
   final String title ;
   final int quantity ;
   final double price ;
-  final String restId;
+  //final String restId;
 
 
   CartItem(  {
@@ -16,7 +16,7 @@ class CartItem{
     @required this.title,
     @required this.quantity,
     @required this.price,
-    @required this.restId,
+   // @required this.restId,
   });
 
 }
@@ -53,7 +53,7 @@ class Cart with ChangeNotifier{
         title: existingCartItem.title ,
         price: existingCartItem.price,
         quantity: existingCartItem.quantity +1 ,
-        restId: existingCartItem.restId,
+       // restId: existingCartItem.restId,
 
       ),
       );
@@ -65,7 +65,7 @@ class Cart with ChangeNotifier{
               title: title,
               quantity: 1,
               price: price,
-              restId: productId
+             // restId: productId
           ),
       );
     }

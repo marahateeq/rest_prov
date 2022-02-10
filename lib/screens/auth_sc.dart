@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/http_exp.dart';
+
 import 'package:rest_prov/providers/auth.dart';
 
 import 'edit_rest_info.dart';
@@ -36,11 +37,11 @@ class AuthSC extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Flexible(
+                 /* Flexible(
                     child: Container(
                       margin: const EdgeInsets.only(bottom: 20),
                       padding:
-                          EdgeInsets.symmetric(vertical: 8, horizontal: 90),
+                      EdgeInsets.symmetric(vertical: 8, horizontal: 90),
                       transform: Matrix4.rotationZ(-11 * pi / 180)
                         ..translate(-10.0),
                       decoration: BoxDecoration(
@@ -63,7 +64,7 @@ class AuthSC extends StatelessWidget {
                             fontWeight: FontWeight.w800),
                       ),
                     ),
-                  ),
+                  ),*/
                   Flexible(
                     flex: dS.width > 600 ? 2 : 1,
                     child: AuthCard(),

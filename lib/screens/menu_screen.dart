@@ -54,7 +54,7 @@ class MenuScreen extends StatelessWidget {
                             children: [
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.of(context).pushNamed(CategoryItems.routeName);
+                                  Navigator.of(context).pushNamed(CategoryItems.routeName, arguments: "Food");
                                 },
                               child:MenuCard(
                                 imageShape: ClipOval(
@@ -68,7 +68,7 @@ class MenuScreen extends StatelessWidget {
                                   ),
                                 ),
                                 name: "Food",
-                                count: "120",
+                                //count: "120",
                               ),
                               ),
                               SizedBox(
@@ -76,7 +76,7 @@ class MenuScreen extends StatelessWidget {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.of(context).pushNamed(CategoryItems.routeName);
+                                  Navigator.of(context).pushNamed(CategoryItems.routeName , arguments: "Drinks");
                                 },
                                 child: MenuCard(
                                   imageShape: ClipRRect(
@@ -90,7 +90,7 @@ class MenuScreen extends StatelessWidget {
                                     ),
                                   ),
                                   name: "Drinks",
-                                  count: "220",
+                                  //count: "220",
                                 ),
                               ),
                               SizedBox(
@@ -98,7 +98,7 @@ class MenuScreen extends StatelessWidget {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                 Navigator.of(context).pushNamed(HomePage.routeName);
+                                 Navigator.of(context).pushNamed(CategoryItems.routeName, arguments: "Salad");
                                 },
                                 child: MenuCard(
                                   imageShape: ClipPath(
@@ -112,7 +112,7 @@ class MenuScreen extends StatelessWidget {
                                     ),
                                   ),
                                   name: "Salad",
-                                  count: "135",
+                                  //count: "135",
                                 ),
                               ),
                               SizedBox(
@@ -120,7 +120,7 @@ class MenuScreen extends StatelessWidget {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.of(context).pushNamed(CategoryItems.routeName);
+                                  Navigator.of(context).pushNamed(CategoryItems.routeName , arguments: "Desserts");
                                 },
                                 child: MenuCard(
                                   imageShape: ClipPath(
@@ -134,7 +134,7 @@ class MenuScreen extends StatelessWidget {
                                     ),
                                   ),
                                   name: "Desserts",
-                                  count: "25",
+                                  //count: "25",
                                 ),
                               ),
                             ],
@@ -150,10 +150,7 @@ class MenuScreen extends StatelessWidget {
       ),
 
 
-      bottomNavigationBar: BottomNavBar(
-
-
-      ),
+      //bottomNavigationBar: BottomNavBar(),
 
 
 
@@ -165,15 +162,15 @@ class MenuCard extends StatelessWidget {
   const MenuCard({
     Key key,
     @required String name,
-    @required String count,
+   // @required String count,
     @required Widget imageShape,
   })  : _name = name,
-        _count = count,
+       // _count = count,
         _imageShape = imageShape,
         super(key: key);
 
   final String _name;
-  final String _count;
+  //final String _count;
   final Widget _imageShape;
 
   @override
@@ -218,7 +215,7 @@ class MenuCard extends StatelessWidget {
               SizedBox(
                 height: 5,
               ),
-              Text("$_count items")
+              //Text("$_count items")
             ],
           ),
         ),

@@ -3,68 +3,63 @@ import 'package:provider/provider.dart';
 import 'package:rest_prov/const/colors.dart';
 import 'package:rest_prov/utils/helper.dart';
 
+import '../providers/orders.dart';
 import '../providers/products.dart';
 import '../widgets/product_item.dart';
 import '../widgets/searchbar.dart';
 import 'manage_products_screen.dart';
 
 
-class CategoryItems extends StatelessWidget {
-  static const routeName = '/CategoryItems';
+class DeliveryOrdersScreen extends StatelessWidget {
+  static const routeName = '/DeliveryOrdersScreen';
 
 
-  Future<void> _refreshProducts(BuildContext context) async {
+  Future<void> _refreshOrders(BuildContext context) async {
 
-    final category = ModalRoute.of(context).settings.arguments;
-    await Provider.of<Products>(context , listen: false).fetchProductsCategory(category);
+    //final category = ModalRoute.of(context).settings.arguments;
+    await Provider.of<Orders>(context , listen: false).fetchAndSetOrders(true);
   }
 
 
   @override
-  Widget build(BuildContext context) {
-    final category = ModalRoute.of(context).settings.arguments;
+   Widget build(BuildContext context) {
+
+    //final category = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
       appBar: AppBar(
-        title:  Text('${category}',
+        title:  Text('DeliveryOrdersScreen',
           style: Helper.getTheme(context).headline5,
         ),
-        actions: [
-          IconButton(
-          icon: const Icon(Icons.search),
-          onPressed: () async {
-            showSearch(context: context, delegate: DataSearch());
-          },
-        ),
-        ],
+
 
       ),
       body:
-            FutureBuilder(
-        future: _refreshProducts(context),
+      FutureBuilder(
+        future: _refreshOrders(context),
         builder: (ctx , AsyncSnapshot snapshot) =>
         snapshot.connectionState == ConnectionState.waiting
             ? Center(child: CircularProgressIndicator(),)
             :RefreshIndicator(
-            child: Consumer<Products>(builder:
-                (ctx , productsData , _ )
+            child: Consumer<Orders>(builder:
+                (ctx , ordersData , _ )
             => Padding(padding: EdgeInsets.all(8),
               child: ListView.builder(
 
-                  itemCount: productsData.items.length,
+                  itemCount: ordersData.orders.length,
                   itemBuilder: (_ , index )=> Column(
                     children: [
                       ProductItem(
-                          productsData.items[index].id ,
-                          productsData.items[index].title ,
-                          productsData.items[index].imageUrl),
+                          ordersData.orders[index].id ,
+                          ordersData.orders[index].timeOfDay.toString() ,
+                          ordersData.orders[index].dateTime.toString()),
                       Divider(),
                     ],
                   )),
             ),
 
             ),
-            onRefresh: ()=> _refreshProducts(context)) ,
+            onRefresh: ()=> _refreshOrders(context)) ,
       ),
 
 

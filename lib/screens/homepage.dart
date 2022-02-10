@@ -4,6 +4,7 @@ import 'package:rest_prov/screens/profile.dart';
 import 'package:rest_prov/widgets/bottomnavigationbar.dart';
 import 'package:rest_prov/widgets/mydrawer.dart';
 
+import 'delivery_orders_screen.dart';
 import 'manage_products_screen.dart';
 int i = 0;
 
@@ -105,7 +106,7 @@ class _HomePageState extends State<HomePage> {
                       borderRadius: BorderRadius.circular(10),
 
                       child: GestureDetector(
-                        onTap: ()=> Navigator.of(context).pushNamed(MenuScreen.routeName),
+                        onTap: ()=> Navigator.of(context).pushNamed(DeliveryOrdersScreen.routeName),
                         child: Image.asset("images/t3.png",
                           width: dS.width * 0.3,
 
@@ -260,7 +261,7 @@ class _HomePageState extends State<HomePage> {
          },
          child: Text('Menu'),
        ),*/
-      bottomNavigationBar: BottomNavBar(),
+      //bottomNavigationBar: BottomNavBar(),
 
 
     );

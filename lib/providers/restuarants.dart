@@ -18,6 +18,7 @@ class Restaurants with ChangeNotifier {
     authToken = authTok;
     userId = uId;
     _items = restaurants;
+    print(userId);
     notifyListeners();
   }
 

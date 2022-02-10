@@ -162,6 +162,50 @@ class Products with ChangeNotifier{
 
 
 
+
+  Future<void> fetchProductsCategory (String cat) async{ //category
+
+    final filteredString = 'orderBy="creatorId"&equalTo="$userId"';
+    var url = 'https://test1-cf86f-default-rtdb.firebaseio.com/products.json?auth=$authToken&$filteredString';
+
+
+    try{
+      final res = await http.get(Uri.parse(url));
+      final extractData = json.decode(res.body) as Map<String ,dynamic>; // key is String , value is dynamic
+      // decode : receive from database
+
+      if (extractData.toString() == null){
+        return;
+      }
+      // url = 'https://test1-cf86f-default-rtdb.firebaseio.com/userFavorites/$userId.json?auth=$authToken';//$userId.json : favorites for this user // authToken : using database only for user logged in
+      //اعطيني المنتجات المفضلة بالنسبة لهاد الشخص
+      //final favRes = await http.get(Uri.parse(url));
+      //final favData = json.decode(favRes.body)  ; // is direct map // key is prodId give boolean value true or false
+
+
+      final List<Product> loadedProducts = [];
+      extractData?.forEach((prodId, prodData) {  // extractData is map ,  prodId is key , prodData is value
+        if(prodData['category'] == cat){
+        loadedProducts.add(Product(
+          id : prodId,
+          title : prodData['title'],
+          category: prodData['category'],
+          description : prodData['description'],
+          price : prodData['price'],
+          imageUrl : prodData['imageUrl'],
+        ));}
+        _items = loadedProducts;
+
+        notifyListeners();
+      }
+      );
+    }catch(e){
+      rethrow ;
+    }
+  }
+
+
+
 }
 
 

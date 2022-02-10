@@ -5,6 +5,7 @@ import 'package:rest_prov/widgets/bottomnavigationbar.dart';
 import 'package:rest_prov/widgets/mydrawer.dart';
 import 'package:rest_prov/widgets/product_item.dart';
 
+import '../providers/product.dart';
 import 'edit_product_screen.dart';
 
 
@@ -16,17 +17,25 @@ class ManageProductsScreen extends StatelessWidget {
 
   Future<void> _refreshProducts(BuildContext context) async {
 
-    await Provider.of<Products>(context , listen: false).fetchAndSetProducts();
+     await Provider.of<Products>(context , listen: false).fetchAndSetProducts();
   }
   @override
   Widget build(BuildContext context) {
+
+
+
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("your Products "),
+        title:  Text("your Products "),
         actions: [
           IconButton(icon: Icon(Icons.search),
             onPressed: () async {
+              //final productdata = await Provider.of<Products>(context, listen: false);
+              //final listprod = productdata.items;
+              //print(productdata.items);
+
               showSearch(context: context, delegate: DataSearch());
             },
           ),
@@ -90,9 +99,10 @@ class ManageProductsScreen extends StatelessWidget {
   }
 }
 
-class DataSearch extends SearchDelegate{
+class DataSearch extends SearchDelegate {
 
-  List list = [];
+  final list = ['t5pojgpfig', 'fsadfg' , 'pizza' , 'foof'] ;
+
 
   @override
   List<Widget> buildActions(BuildContext context) {

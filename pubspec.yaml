@@ -33,8 +33,7 @@ dependencies:
     sdk: flutter
   http: ^0.13.4
   intl: ^0.17.0
-  firebase_core: ^1.11.0
-
+  firebase_core: ^1.12.0
   provider: ^6.0.1
   shared_preferences: ^2.0.11
   image_picker: ^0.8.4+4
