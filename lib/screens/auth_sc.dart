@@ -334,7 +334,7 @@ class _AuthCardState extends State<AuthCard>
                 TextButton(
                   onPressed: _switchAuthMode,
                   child: Text(
-                      '${testmod == 'Log in' ? 'Signup' : 'Login '}  Insted '),
+                      '${testmod == 'Log in' ? 'Create new account ' : 'Already have an account'}'),
                   style: ButtonStyle(
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(

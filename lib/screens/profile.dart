@@ -1,31 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rest_prov/const/colors.dart';
-import 'package:rest_prov/providers/restuarant.dart';
-import 'package:rest_prov/providers/restuarants.dart';
 import 'package:rest_prov/utils/helper.dart';
 
+import '../providers/restuarant.dart';
+import '../providers/restuarants.dart';
 import 'homepage.dart';
-
 
 class Profile extends StatefulWidget {
   static const routeName = "/profile";
+
+  //final rest =await Provider.of<Restaurants>(context).fetchRestaurant();
 
   @override
   State<Profile> createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
-
+  @override
+  void initState() {
+    Provider.of<Restaurants>(context, listen: false).fetchRestaurant();
+  }
 
   Widget build(BuildContext context) {
+    //final restaurant =
+    final rest = Provider.of<Restaurants>(context, listen: false).rest;
 
-    //final restaurant = Provider.of<Restaurant>(context , listen: false);
+    final _restaurant = ModalRoute.of(context).settings.arguments as Restaurant;
 
-    //final _restaurant = ModalRoute.of(context).settings.arguments as Restaurant;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Your Profile "),
+        title: Text(rest['name']),
       ),
       body: Stack(
         children: [
@@ -38,7 +43,6 @@ class _ProfileState extends State<Profile> {
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Column(
                     children: [
-
                       SizedBox(
                         height: 20,
                       ),
@@ -48,7 +52,8 @@ class _ProfileState extends State<Profile> {
                             Container(
                               height: 150,
                               width: 150,
-                              child: Image.asset("images/profile.png",
+                              child: Image.asset(
+                                "images/profile.png",
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -71,17 +76,18 @@ class _ProfileState extends State<Profile> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
-                            Icons.edit , //color: Colors.deepOrange,
+                            Icons.edit, //color: Colors.deepOrange,
                           ),
                           SizedBox(
                             width: 5,
                           ),
-                            GestureDetector(
+                          GestureDetector(
                             child: Text(
                               "Edit Profile",
                               style: TextStyle(color: AppColor.orange),
                             ),
-                            onTap: () => Navigator.of(context).pushNamed(HomePage.routeName),
+                            onTap: () => Navigator.of(context)
+                                .pushNamed(HomePage.routeName),
                           ),
                         ],
                       ),
@@ -149,7 +155,6 @@ class _ProfileState extends State<Profile> {
               ),
             ),
           ),
-
         ],
       ),
     );

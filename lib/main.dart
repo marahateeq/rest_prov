@@ -1,7 +1,5 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rest_prov/firebase_options.dart';
 import 'package:rest_prov/providers/auth.dart';
 import 'package:rest_prov/providers/orders.dart';
 import 'package:rest_prov/providers/products.dart';
@@ -17,12 +15,11 @@ import 'package:rest_prov/screens/menu_screen.dart';
 import 'package:rest_prov/screens/profile.dart';
 import 'package:rest_prov/screens/splash_sc.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+void main() {
+  //WidgetsFlutterBinding.ensureInitialized();
+  //await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({Key key}) : super(key: key);
@@ -30,29 +27,35 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: Auth()),
         //ChangeNotifierProvider.value(value: Cart()),
-        ChangeNotifierProxyProvider<Auth , Products>(
+        ChangeNotifierProxyProvider<Auth, Products>(
             create: (_) => Products(),
-            update: (ctx , authValue , previousProducts) => previousProducts
-              ..getData( authValue.token, authValue.userID , previousProducts==null? null : previousProducts.items,
-            )
-        ),
-        ChangeNotifierProxyProvider<Auth , Restaurants>(
+            update: (ctx, authValue, previousProducts) => previousProducts
+              ..getData(
+                authValue.token,
+                authValue.userID,
+                previousProducts == null ? null : previousProducts.items,
+              )),
+        ChangeNotifierProxyProvider<Auth, Restaurants>(
             create: (_) => Restaurants(),
-            update: (ctx , authValue , previousRestaurants) => previousRestaurants
-              ..getData( authValue.token, authValue.userID , previousRestaurants==null? null : previousRestaurants.items,
-              )
-        ),
-        ChangeNotifierProxyProvider<Auth , Orders>(
+            update: (ctx, authValue, previousRestaurants) => previousRestaurants
+              ..getData(
+                authValue.token,
+                authValue.userID,
+                previousRestaurants == null ? null : previousRestaurants.items,
+              )),
+
+        ChangeNotifierProxyProvider<Auth, Orders>(
             create: (_) => Orders(),
-            update: (ctx , authValue , previousOrders) => previousOrders
-              ..getData( authValue.token, authValue.userID , previousOrders==null? null : previousOrders.orders,
-              )
-        ),
+            update: (ctx, authValue, previousOrders) => previousOrders
+              ..getData(
+                authValue.token,
+                authValue.userID,
+                previousOrders == null ? null : previousOrders.orders,
+              )),
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, _) => MaterialApp(
@@ -62,7 +65,7 @@ class MyApp extends StatelessWidget {
             fontFamily: 'Lat',
           ),
           home: auth.isAuth
-              ? const HomePage()
+              ? HomePage()
               : FutureBuilder(
                   future: auth.tryAutoLogIn(),
                   builder: (BuildContext ctx, AsyncSnapshot snapshot) =>
@@ -73,12 +76,12 @@ class MyApp extends StatelessWidget {
             AuthSC.routeName: (_) => const AuthSC(),
             ManageProductsScreen.routeName: (_) => const ManageProductsScreen(),
             EditProductScreen.routeName: (_) => const EditProductScreen(),
-            EditResInfo.routeName:(_) => const EditResInfo(),
-            HomePage.routeName : (_) => const HomePage(),
+            EditResInfo.routeName: (_) => const EditResInfo(),
+            HomePage.routeName: (_) => const HomePage(),
             MenuScreen.routeName: (_) => MenuScreen(),
-            CategoryItems.routeName : (_) => CategoryItems(),
-            Profile.routeName : (_) => Profile(),
-            DeliveryOrdersScreen.routeName : (_) => DeliveryOrdersScreen(),
+            CategoryItems.routeName: (_) => CategoryItems(),
+            Profile.routeName: (_) => Profile(),
+            DeliveryOrdersScreen.routeName: (_) => DeliveryOrdersScreen(),
           },
           debugShowCheckedModeBanner: false,
         ),
@@ -86,3 +89,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+// var fmt = DateFormat("HH:mm").format(now);

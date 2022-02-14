@@ -21,6 +21,7 @@ class Products with ChangeNotifier{
     authToken = authTok;
     userId = uId;
     _items = products;
+    print(authToken);
     notifyListeners();
   }
 
@@ -78,6 +79,7 @@ class Products with ChangeNotifier{
 
   Future<void> addProduct(Product product) async{
     final url = 'https://test1-cf86f-default-rtdb.firebaseio.com/products.json?auth=$authToken';
+    print(authToken);
 
     try{
       final res = await http.post(   // send data to database

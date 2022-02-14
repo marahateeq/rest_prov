@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rest_prov/providers/products.dart';
@@ -13,7 +15,9 @@ const ProductItem(
    this.title,
    this.imageUrl,
 );
-
+Image imageFromBase64String(String base64String) {
+  return Image.memory(base64Decode(base64String));
+}
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +25,7 @@ const ProductItem(
     return ListTile(
       title: Text(title),
       leading: CircleAvatar(
-        backgroundImage: NetworkImage(imageUrl),
+        backgroundImage: imageFromBase64String(imageUrl).image,
       ),
       trailing: Container(
         width: 100,

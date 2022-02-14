@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -8,8 +9,8 @@ class OrderItem {
   final String id;
   final double amount;
   final List<CartItem> products;
-  final DateTime dateTime;
-  final TimeOfDay timeOfDay;
+  final String dateTime;
+  final String timeOfDay;
   bool Delivery = false;
 
   OrderItem(
@@ -40,11 +41,12 @@ class Orders with ChangeNotifier {
 
   Future<void> fetchAndSetOrders(bool delRes) async {
 
-    final url =
+
+  final url =
         'https://test1-cf86f-default-rtdb.firebaseio.com/orders.json?auth=$authToken';      //?$userId.json
     // final : will not change
     try {
-      final res = await http.get(Uri.parse(url));
+      final res = await http.get(Uri.parse(url)).whenComplete(() => print("wlkfjklsd"));
       final extractData = json.decode(res.body) as Map<String, dynamic>;
 
       if (extractData == null) {
@@ -56,28 +58,31 @@ class Orders with ChangeNotifier {
 
 
       extractData.forEach((orderId, orderData11) {
+        print(orderData11);
        // if (orderData11['delivery'] == delRes) {
           orderData11.forEach((iid, orderData) {
+            print("77");
+            print(orderData);
             products = orderData['products'];
 
             products.forEach((element) {
+              print(element);
+              print(userId);
+              print(element['resId']);
+               if (element['resId'] == userId) {
 
-              if (element['resId'] == userId) {
-                print(userId);
-                loadedOrders.add(
-                    OrderItem(
-                      id: iid,
-                      amount: orderData['amount'],
-                      dateTime: DateTime.parse(orderData['datetime']),
-                      timeOfDay: orderData['timeofday'],
+              loadedOrders.add(
+                  OrderItem(
+                    id: iid,
+                    amount: orderData['amount'],
+                    dateTime: DateTime.parse(orderData['datetime']).toString(),
+                    timeOfDay: orderData['timeofday'].toString(),
 
-                    )
-                ); //add
-                print("done");
-              }
-              else {
-                print('no');
-              }
+                  )
+              ); //add
+            }
+              print("done");
+
             });
           }
           );
@@ -86,7 +91,9 @@ class Orders with ChangeNotifier {
 
       _orders = loadedOrders.reversed.toList(); //reversed:  اخر طلب يصبح بالبداية
       notifyListeners();
+     // print(_orders.length);
     } catch (e) {
+     // print(e);
       rethrow;
     }
   }
@@ -126,8 +133,8 @@ class Orders with ChangeNotifier {
             id: userId,
             amount: total,
             products: cartProduct,
-            dateTime: date,
-            timeOfDay: time,
+            dateTime: date.toString(),
+            timeOfDay: time.toString(),
           ));
 
       notifyListeners();

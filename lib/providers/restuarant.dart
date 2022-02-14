@@ -1,15 +1,14 @@
-import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
-
+import 'package:flutter/material.dart';
 
 class Restaurant with ChangeNotifier {
-
   final String id;
   final String name;
   final String address;
-  final String imageUrl ;
-
+  final String imageUrl;
+  final String phone;
+  final String opentime;
+  final String closetime;
   //List<Product> _menu = [];
 
   Restaurant({
@@ -17,13 +16,9 @@ class Restaurant with ChangeNotifier {
     this.name,
     this.address,
     this.imageUrl,
-   // required this.menu,
+    this.phone,
+    this.opentime,
+    this.closetime,
+    // required this.menu,
   });
-
-
-
-
-
-
-
 }
