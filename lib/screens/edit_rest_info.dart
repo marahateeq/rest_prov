@@ -31,11 +31,12 @@ class _EditResInfoState extends State<EditResInfo> {
     address: '',
     imageUrl: '',
     phone: '',
-    opentime: '',
-    closetime: '',
+    //to do
+    //opentime: '',
+    //closetime: '',
   );
 
-  var _initialValues = {'name': '', 'address': '', 'imageUrl': ''};
+  var _initialValues = {'name': '', 'address': '', 'imageUrl': '', 'phone': ''};
 
   var _isInit = true;
   var _isLoading = false;
@@ -62,7 +63,8 @@ class _EditResInfoState extends State<EditResInfo> {
         _initialValues = {
           'name': _editedRes.name,
           'address': _editedRes.address,
-          'imageUrl': ''
+          'imageUrl': '',
+          'phone': _editedRes.phone,
         };
         _imageUrlController.text = _editedRes.imageUrl;
       }
@@ -148,7 +150,7 @@ class _EditResInfoState extends State<EditResInfo> {
       //you can use ImageCourse.camera for Camera capture
       if (pickedFile != null) {
         imagepath = pickedFile.path;
-        print(imagepath);
+        // print(imagepath);
         //output /data/user/0/com.example.testapp/cache/image_picker7973898508152261600.jpg
 
         File imagefile = File(imagepath); //convert Path to File
@@ -212,6 +214,7 @@ class _EditResInfoState extends State<EditResInfo> {
                           id: _editedRes.id,
                           name: value,
                           address: _editedRes.address,
+                          phone: _editedRes.phone,
                           imageUrl: _editedRes.imageUrl,
                         );
                       },
@@ -224,6 +227,9 @@ class _EditResInfoState extends State<EditResInfo> {
                       keyboardType: TextInputType.text,
                       textInputAction: TextInputAction.next,
                       focusNode: _addressFocusNode,
+                      onFieldSubmitted: (_) {
+                        FocusScope.of(context).requestFocus(_phoneFocusNode);
+                      },
                       validator: (value) {
                         if (value.isEmpty) {
                           return 'Please enter your restaurant address.';
@@ -236,6 +242,7 @@ class _EditResInfoState extends State<EditResInfo> {
                           id: _editedRes.id,
                           name: _editedRes.name,
                           address: value,
+                          phone: _editedRes.phone,
                           imageUrl: _editedRes.imageUrl,
                         );
                       },
@@ -244,14 +251,12 @@ class _EditResInfoState extends State<EditResInfo> {
                       height: 20,
                     ),
                     TextFormField(
-                      initialValue: _initialValues['name'] as String,
+                      initialValue: _initialValues['phone'] as String,
                       decoration: InputDecoration(
-                        labelText: 'Name',
+                        labelText: 'Phone Number',
                       ),
+                      keyboardType: TextInputType.number,
                       textInputAction: TextInputAction.next,
-                      onFieldSubmitted: (_) {
-                        FocusScope.of(context).requestFocus(_addressFocusNode);
-                      },
                       validator: (value) {
                         if (value.isEmpty) {
                           return 'Please provide a value';
@@ -261,8 +266,9 @@ class _EditResInfoState extends State<EditResInfo> {
                       onSaved: (value) {
                         _editedRes = Restaurant(
                           id: _editedRes.id,
-                          name: value,
+                          name: _editedRes.name,
                           address: _editedRes.address,
+                          phone: value,
                           imageUrl: _editedRes.imageUrl,
                         );
                       },
@@ -349,6 +355,7 @@ class _EditResInfoState extends State<EditResInfo> {
                                     id: _editedRes.id,
                                     name: _editedRes.name,
                                     address: _editedRes.address,
+                                    phone: _editedRes.phone,
                                     imageUrl: mypic,
                                   );
                                 });

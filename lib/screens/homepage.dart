@@ -1,4 +1,3 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rest_prov/screens/menu_screen.dart';
@@ -6,6 +5,7 @@ import 'package:rest_prov/screens/profile.dart';
 
 import '../providers/auth.dart';
 import '../providers/restuarants.dart';
+import 'auth_sc.dart';
 import 'delivery_orders_screen.dart';
 import 'manage_products_screen.dart';
 
@@ -24,30 +24,40 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> emver() async {
     await Provider.of<Auth>(context, listen: false).userData();
-    bool v = await Provider.of<Auth>(context, listen: false).emailverified;
-    if (v == false) {
-      AwesomeDialog(
-        context: context,
-        animType: AnimType.SCALE,
-        dialogType: DialogType.INFO,
-        body: Center(
-          child: Text(
-            'your email address not verified , Please check your email! ',
-            style: TextStyle(fontStyle: FontStyle.italic),
-          ),
-        ),
-        title: 'Verify',
-        btnCancelOnPress: () async {
-          await Provider.of<Auth>(context, listen: false).logout();
-        },
-        //desc: 'This is also Ignored',
-        btnOkOnPress: () async {
-          await Provider.of<Auth>(context, listen: false).sendE().then(
-              (value) async =>
-                  await Provider.of<Auth>(context, listen: false).logout());
-        },
-      )..show();
-    }
+    // bool v = await Provider.of<Auth>(context, listen: false).emailverified;
+    // if (v == false) {
+    //   AwesomeDialog(
+    //     context: context,
+    //     animType: AnimType.SCALE,
+    //     dialogType: DialogType.INFO,
+    //     body: Center(
+    //       child: Text(
+    //         'your email address not verified , Please check your email! ',
+    //         style: TextStyle(fontStyle: FontStyle.italic),
+    //       ),
+    //     ),
+    //     title: 'Verify',
+    //
+    //     btnCancelOnPress: () async {
+    //       await Provider.of<Auth>(context, listen: false).logout().then(
+    //           (value) =>
+    //               Navigator.of(context).pushReplacementNamed(AuthSC.routeName));
+    //     },
+    //     btnOkColor: Colors.teal,
+    //     btnCancelColor: Colors.red,
+    //     btnCancelText: "Exit",
+    //     //desc: 'This is also Ignored',
+    //     btnOkText: "ReSend",
+    //     btnOkOnPress: () async {
+    //       await Provider.of<Auth>(context, listen: false)
+    //           .sendE()
+    //           .then((value) async =>
+    //               await Provider.of<Auth>(context, listen: false).logout())
+    //           .then((value) =>
+    //               Navigator.of(context).pushReplacementNamed(AuthSC.routeName));
+    //     },
+    //   )..show();
+    // }
   }
 
   @override
@@ -145,8 +155,11 @@ class _HomePageState extends State<HomePage> {
               ListTile(
                   title: Text("Logout"),
                   leading: Icon(Icons.exit_to_app),
-                  onTap: () {
-                    Provider.of<Auth>(context, listen: false).logout();
+                  onTap: () async {
+                    await Provider.of<Auth>(context, listen: false)
+                        .logout()
+                        .whenComplete(() => Navigator.of(context)
+                            .pushReplacementNamed(AuthSC.routeName));
                   }),
             ],
           ),
@@ -186,7 +199,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                       child: Image.asset(
                                         "images/profile.png",
-                                        width: dS.width * 0.3,
+                                        width: dS.width * 0.35,
                                         fit: BoxFit.fill,
                                       ),
                                     ),
@@ -205,7 +218,7 @@ class _HomePageState extends State<HomePage> {
                                 ],
                               ),
                               SizedBox(
-                                width: 10,
+                                width: dS.width * .1,
                               ),
                               Column(
                                 children: [
@@ -217,7 +230,7 @@ class _HomePageState extends State<HomePage> {
                                           .pushNamed(MenuScreen.routeName),
                                       child: Image.asset(
                                         "images/m2.png",
-                                        width: dS.width * 0.3,
+                                        width: dS.width * 0.35,
                                         fit: BoxFit.fill,
                                       ),
                                     ),
@@ -238,6 +251,7 @@ class _HomePageState extends State<HomePage> {
                             ],
                           ),
                         ),
+
                         Container(
                           margin: EdgeInsets.all(20),
                           child: Row(
@@ -253,7 +267,7 @@ class _HomePageState extends State<HomePage> {
                                               DeliveryOrdersScreen.routeName),
                                       child: Image.asset(
                                         "images/t3.png",
-                                        width: dS.width * 0.3,
+                                        width: dS.width * 0.35,
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -264,7 +278,7 @@ class _HomePageState extends State<HomePage> {
                                     height: 15,
                                   ),
                                   Text(
-                                    "Reservation_Orders",
+                                    "Reservation",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontSize: 20, color: Colors.deepOrange),
@@ -272,7 +286,7 @@ class _HomePageState extends State<HomePage> {
                                 ],
                               ),
                               SizedBox(
-                                width: 10,
+                                width: dS.width * .1,
                               ),
                               Column(
                                 children: [
@@ -284,7 +298,7 @@ class _HomePageState extends State<HomePage> {
                                           .pushNamed(MenuScreen.routeName),
                                       child: Image.asset(
                                         "images/d.png",
-                                        width: dS.width * 0.3,
+                                        width: dS.width * 0.35,
                                         fit: BoxFit.fill,
                                       ),
                                     ),
@@ -295,7 +309,7 @@ class _HomePageState extends State<HomePage> {
                                     height: 15,
                                   ),
                                   Text(
-                                    "Delivery_Orders",
+                                    "Delivery",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontSize: 20, color: Colors.deepOrange),
@@ -305,7 +319,7 @@ class _HomePageState extends State<HomePage> {
                             ],
                           ),
                         ),
-                        Container(
+                        /* Container(
                           margin: EdgeInsets.all(20),
                           child: Row(
                             children: [
@@ -319,7 +333,7 @@ class _HomePageState extends State<HomePage> {
                                           .pushNamed(MenuScreen.routeName),
                                       child: Image.asset(
                                         "images/n.png",
-                                        width: dS.width * 0.3,
+                                        width: dS.width * 0.4,
                                         fit: BoxFit.fill,
                                       ),
                                     ),
@@ -350,7 +364,7 @@ class _HomePageState extends State<HomePage> {
                                           .pushNamed(MenuScreen.routeName),
                                       child: Image.asset(
                                         "images/offer.png",
-                                        width: dS.width * 0.3,
+                                        width: dS.width * 0.4,
                                         fit: BoxFit.fill,
                                       ),
                                     ),
@@ -370,7 +384,7 @@ class _HomePageState extends State<HomePage> {
                               )
                             ],
                           ),
-                        ),
+                        ),*/
                         Container(
                           margin: EdgeInsets.all(20),
                           child: Row(
@@ -388,7 +402,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                       child: Image.asset(
                                         "images/m77.png",
-                                        width: dS.width * 0.2,
+                                        width: dS.width * 0.3,
                                         fit: BoxFit.fill,
                                       ),
                                     ),
@@ -396,23 +410,53 @@ class _HomePageState extends State<HomePage> {
                                     //backgroundColor: Colors.black87,
                                   ),
                                   SizedBox(
-                                    height: 15,
+                                    height: 5,
                                   ),
                                   Text(
-                                    "Manage Products  ",
+                                    "Products  ",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontSize: 20, color: Colors.deepOrange),
                                   ),
                                 ],
                               ),
+                              SizedBox(
+                                width: dS.width * .15,
+                              ),
+                              Column(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+
+                                    child: GestureDetector(
+                                      onTap: () => Navigator.of(context)
+                                          .pushNamed(MenuScreen.routeName),
+                                      child: Image.asset(
+                                        "images/offer.png",
+                                        width: dS.width * 0.35,
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+
+                                    //backgroundColor: Colors.black87,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    "Offers",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.deepOrange),
+                                  ),
+                                ],
+                              )
                             ],
                           ),
                         ),
                       ],
                     ),
                   ),
-
                   /*ElevatedButton(
          onPressed: (){
            Navigator.of(context).pushNamed(MenuScreen.routeName);

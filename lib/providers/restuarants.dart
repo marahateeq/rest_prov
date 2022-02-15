@@ -49,9 +49,9 @@ class Restaurants with ChangeNotifier {
             'address': restaurant.address,
             'imageUrl': restaurant.imageUrl,
             'creatorId': userId,
-            'phone number': restaurant.phone,
-            'openTime': restaurant.opentime,
-            'closeTime': restaurant.closetime,
+            'phone': restaurant.phone,
+            //  'openTime': restaurant.opentime,
+            // 'closeTime': restaurant.closetime,
           }));
 
       final newRes = Restaurant(
@@ -62,8 +62,8 @@ class Restaurants with ChangeNotifier {
         address: restaurant.address,
         imageUrl: restaurant.imageUrl,
         phone: restaurant.phone,
-        opentime: restaurant.opentime,
-        closetime: restaurant.closetime,
+        //opentime: restaurant.opentime,
+        //closetime: restaurant.closetime,
       );
       _items.add(newRes);
       //_items.insert(0, newProduct);

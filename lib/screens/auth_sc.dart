@@ -1,10 +1,9 @@
-import 'dart:math';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/http_exp.dart';
-
 import 'package:rest_prov/providers/auth.dart';
 
+import '../models/http_exp.dart';
 import 'edit_rest_info.dart';
 
 class AuthSC extends StatelessWidget {
@@ -37,7 +36,7 @@ class AuthSC extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                 /* Flexible(
+                  /* Flexible(
                     child: Container(
                       margin: const EdgeInsets.only(bottom: 20),
                       padding:
@@ -159,9 +158,9 @@ class _AuthCardState extends State<AuthCard>
             });
           }
           Navigator.of(context).pushReplacementNamed(
-            EditResInfo.routeName,);
+            EditResInfo.routeName,
+          );
         });
-
       }
     } on HttpExp catch (e) {
       var emsg = 'Authentication failed';
@@ -204,35 +203,55 @@ class _AuthCardState extends State<AuthCard>
     }
   }
 
+  // void _showE(String emsg) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (ctx) => AlertDialog(
+  //       title: const Text('Erorr Founded'),
+  //       titleTextStyle: TextStyle(color: Colors.teal),
+  //       content: Text(emsg),
+  //       elevation: 15,
+  //       actions: [
+  //         ElevatedButton(
+  //           style: ButtonStyle(elevation:  MaterialStateProperty.all(8) ,
+  //               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+  //                   RoundedRectangleBorder(
+  //                       borderRadius: BorderRadius.circular(18.0),
+  //                       side: BorderSide(color: Colors.red)
+  //                   ))
+  //           ),
+  //           onPressed: () => Navigator.pop(ctx),
+  //           child: const Text(
+  //             'OK',
+  //             style: TextStyle(fontWeight: FontWeight.w900, fontSize: 20),
+  //           ),
+  //         )
+  //       ],
+  //       actionsAlignment: MainAxisAlignment.center,
+  //       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+  //       alignment: Alignment.center,
+  //     ),
+  //   );
+
   void _showE(String emsg) {
-    showDialog(
+    AwesomeDialog(
       context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Erorr Founded'),
-        titleTextStyle: TextStyle(color: Colors.teal),
-        content: Text(emsg),
-        elevation: 15,
-        actions: [
-          ElevatedButton(
-            style: ButtonStyle(elevation:  MaterialStateProperty.all(8) ,
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                        side: BorderSide(color: Colors.red)
-                    ))
-            ),
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text(
-              'OK',
-              style: TextStyle(fontWeight: FontWeight.w900, fontSize: 20),
-            ),
-          )
-        ],
-        actionsAlignment: MainAxisAlignment.center,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        alignment: Alignment.center,
+      animType: AnimType.SCALE,
+      dialogType: DialogType.ERROR,
+      body: Center(
+        child: Text(
+          emsg,
+          style: TextStyle(fontStyle: FontStyle.italic),
+        ),
       ),
-    );
+      title: 'Erorr',
+
+      btnOkColor: Colors.teal,
+
+//desc: 'This is also Ignored',
+      btnOkText: "OK",
+      btnOkOnPress: () {},
+    )..show();
   }
 
   @override
@@ -305,6 +324,7 @@ class _AuthCardState extends State<AuthCard>
                         decoration:
                             InputDecoration(labelText: 'Confirm Password'),
                         keyboardType: TextInputType.visiblePassword,
+                        obscureText: true,
                         validator: (val1) {
                           if (_authMode == AuthMode.SignUp &&
                               val1 != _passCon.text) {
