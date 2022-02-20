@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:provider/provider.dart';
 import 'package:rest_prov/screens/menu_screen.dart';
 import 'package:rest_prov/screens/profile.dart';
 
 import '../providers/auth.dart';
 import '../providers/restuarants.dart';
-import 'auth_sc.dart';
 import 'delivery_orders_screen.dart';
 import 'manage_products_screen.dart';
 
@@ -24,40 +24,46 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> emver() async {
     await Provider.of<Auth>(context, listen: false).userData();
-    // bool v = await Provider.of<Auth>(context, listen: false).emailverified;
-    // if (v == false) {
-    //   AwesomeDialog(
-    //     context: context,
-    //     animType: AnimType.SCALE,
-    //     dialogType: DialogType.INFO,
-    //     body: Center(
-    //       child: Text(
-    //         'your email address not verified , Please check your email! ',
-    //         style: TextStyle(fontStyle: FontStyle.italic),
-    //       ),
-    //     ),
-    //     title: 'Verify',
-    //
-    //     btnCancelOnPress: () async {
-    //       await Provider.of<Auth>(context, listen: false).logout().then(
-    //           (value) =>
-    //               Navigator.of(context).pushReplacementNamed(AuthSC.routeName));
-    //     },
-    //     btnOkColor: Colors.teal,
-    //     btnCancelColor: Colors.red,
-    //     btnCancelText: "Exit",
-    //     //desc: 'This is also Ignored',
-    //     btnOkText: "ReSend",
-    //     btnOkOnPress: () async {
-    //       await Provider.of<Auth>(context, listen: false)
-    //           .sendE()
-    //           .then((value) async =>
-    //               await Provider.of<Auth>(context, listen: false).logout())
-    //           .then((value) =>
-    //               Navigator.of(context).pushReplacementNamed(AuthSC.routeName));
-    //     },
-    //   )..show();
-    // }
+    /* bool v = Provider.of<Auth>(context, listen: false).emailverified;
+    if (v == false) {
+      AwesomeDialog(
+        context: context,
+        animType: AnimType.SCALE,
+        dialogType: DialogType.INFO,
+        body: const Center(
+          child: Text(
+            'your email address not verified , Please check your email! ',
+            style: TextStyle(fontStyle: FontStyle.italic),
+          ),
+        ),
+        title: 'Verify',
+
+        btnCancelOnPress: () async {
+          await Provider.of<Auth>(context, listen: false).logout().then(
+              (value) =>
+                  Navigator.of(context).pushReplacementNamed(AuthSC.routeName));
+          setState(() {
+            Phoenix.rebirth(context);
+          });
+        },
+        btnOkColor: Colors.teal,
+        btnCancelColor: Colors.red,
+        btnCancelText: "Exit",
+        //desc: 'This is also Ignored',
+        btnOkText: "ReSend",
+        btnOkOnPress: () async {
+          await Provider.of<Auth>(context, listen: false)
+              .sendE()
+              .then((value) async =>
+                  await Provider.of<Auth>(context, listen: false).logout())
+              .then((value) =>
+                  Navigator.of(context).pushReplacementNamed(AuthSC.routeName));
+          setState(() {
+            Phoenix.rebirth(context);
+          });
+        },
+      ).show();
+    }*/ // email verfit func
   }
 
   @override
@@ -74,7 +80,7 @@ class _HomePageState extends State<HomePage> {
   //       .whenComplete(() => _islo = false);
   // }
 
-  bool _isl = true;
+  final bool _isl = true;
   @override
   void initState() {
     super.initState();
@@ -98,7 +104,7 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text(
+          title: const Text(
             ' Just Eat',
           ),
           centerTitle: true,
@@ -108,58 +114,57 @@ class _HomePageState extends State<HomePage> {
             children: [
               UserAccountsDrawerHeader(
                 currentAccountPicture:
-                    CircleAvatar(backgroundColor: Colors.deepOrange),
+                    const CircleAvatar(backgroundColor: Colors.deepOrange),
                 accountName: myname == null
-                    ? Text(' ')
-                    : Text('${myname}'), //Text("${user.uid}"),
+                    ? const Text(' ')
+                    : Text(myname), //Text("${user.uid}"),
                 accountEmail: uemail == null
                     ? const Text('')
                     : Text(uemail), // Text("${user.email}")
               ),
               ListTile(
-                title: Text("Profile"),
-                leading: Icon(Icons.restaurant),
+                title: const Text("Profile"),
+                leading: const Icon(Icons.restaurant),
                 onTap: () {
                   Navigator.of(context).pushNamed(Profile.routeName);
                 },
               ),
               ListTile(
-                title: Text("Rest_Menu"),
-                leading: Icon(Icons.fastfood),
+                title: const Text("Rest_Menu"),
+                leading: const Icon(Icons.fastfood),
                 onTap: () {
                   Navigator.of(context)
                       .pushNamed(ManageProductsScreen.routeName);
                 },
               ),
               ListTile(
-                title: Text("Delivery_orders"),
-                leading: Icon(Icons.delivery_dining_sharp),
+                title: const Text("Delivery_orders"),
+                leading: const Icon(Icons.delivery_dining_sharp),
                 onTap: () {
                   Navigator.of(context).pushReplacementNamed("cart");
                 },
               ),
               ListTile(
-                title: Text("Reservation_orders"),
-                leading: Icon(Icons.chair),
+                title: const Text("Reservation_orders"),
+                leading: const Icon(Icons.chair),
                 onTap: () {
                   Navigator.of(context).pushReplacementNamed("homepage");
                 },
               ),
               ListTile(
-                title: Text("Notifications"),
-                leading: Icon(Icons.notifications_active),
+                title: const Text("Notifications"),
+                leading: const Icon(Icons.notifications_active),
                 onTap: () {
                   Navigator.of(context).pushReplacementNamed("homepage");
                 },
               ),
               ListTile(
-                  title: Text("Logout"),
-                  leading: Icon(Icons.exit_to_app),
+                  title: const Text("Logout"),
+                  leading: const Icon(Icons.exit_to_app),
                   onTap: () async {
                     await Provider.of<Auth>(context, listen: false)
                         .logout()
-                        .whenComplete(() => Navigator.of(context)
-                            .pushReplacementNamed(AuthSC.routeName));
+                        .then(Phoenix.rebirth(context));
                   }),
             ],
           ),
@@ -183,7 +188,7 @@ class _HomePageState extends State<HomePage> {
                         //   child: Text('email'),
                         // ),
                         Container(
-                          margin: EdgeInsets.all(20),
+                          margin: const EdgeInsets.all(20),
                           child: Row(
                             children: [
                               Column(
@@ -206,10 +211,10 @@ class _HomePageState extends State<HomePage> {
 
                                     //backgroundColor: Colors.black87,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 15,
                                   ),
-                                  Text(
+                                  const Text(
                                     "Profile ",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
@@ -237,10 +242,10 @@ class _HomePageState extends State<HomePage> {
 
                                     //backgroundColor: Colors.black87,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 15,
                                   ),
-                                  Text(
+                                  const Text(
                                     "Menu",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
@@ -253,7 +258,7 @@ class _HomePageState extends State<HomePage> {
                         ),
 
                         Container(
-                          margin: EdgeInsets.all(20),
+                          margin: const EdgeInsets.all(20),
                           child: Row(
                             children: [
                               Column(
@@ -274,10 +279,10 @@ class _HomePageState extends State<HomePage> {
 
                                     //backgroundColor: Colors.black87,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 15,
                                   ),
-                                  Text(
+                                  const Text(
                                     "Reservation",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
@@ -305,10 +310,10 @@ class _HomePageState extends State<HomePage> {
 
                                     //backgroundColor: Colors.black87,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 15,
                                   ),
-                                  Text(
+                                  const Text(
                                     "Delivery",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
@@ -386,7 +391,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),*/
                         Container(
-                          margin: EdgeInsets.all(20),
+                          margin: const EdgeInsets.all(20),
                           child: Row(
                             children: [
                               Column(
@@ -409,10 +414,10 @@ class _HomePageState extends State<HomePage> {
 
                                     //backgroundColor: Colors.black87,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 5,
                                   ),
-                                  Text(
+                                  const Text(
                                     "Products  ",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
@@ -440,10 +445,10 @@ class _HomePageState extends State<HomePage> {
 
                                     //backgroundColor: Colors.black87,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 5,
                                   ),
-                                  Text(
+                                  const Text(
                                     "Offers",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(

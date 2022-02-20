@@ -29,7 +29,7 @@ class AuthSC extends StatelessWidget {
             ),
           ),
           SingleChildScrollView(
-            child: Container(
+            child: SizedBox(
               height: dS.height,
               width: dS.width,
               child: Column(
@@ -66,7 +66,7 @@ class AuthSC extends StatelessWidget {
                   ),*/
                   Flexible(
                     flex: dS.width > 600 ? 2 : 1,
-                    child: AuthCard(),
+                    child: const AuthCard(),
                   )
                 ],
               ),
@@ -112,11 +112,11 @@ class _AuthCardState extends State<AuthCard>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(microseconds: 400),
+      duration: const Duration(microseconds: 400),
     );
     _slideAnimation = Tween<Offset>(
-      begin: Offset(0, -0.15),
-      end: Offset(0, 0),
+      begin: const Offset(0, -0.15),
+      end: const Offset(0, 0),
     ).animate(
       CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn),
     );
@@ -151,15 +151,15 @@ class _AuthCardState extends State<AuthCard>
       } else {
         await Provider.of<Auth>(context, listen: false)
             .signUp(_authdata['email'], _authdata['password'])
-            .whenComplete(() {
-          if (_isloading == false) {
-            setState(() {
-              _authMode = AuthMode.Login;
-            });
-          }
-          Navigator.of(context).pushReplacementNamed(
-            EditResInfo.routeName,
-          );
+            .then((value) {
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil(EditResInfo.routeName, (route) => false);
+
+          // else {
+          //   (e) {
+          //     dispose();
+          //   };
+          // }
         });
       }
     } on HttpExp catch (e) {
@@ -235,13 +235,15 @@ class _AuthCardState extends State<AuthCard>
 
   void _showE(String emsg) {
     AwesomeDialog(
+      dismissOnBackKeyPress: false,
+      dismissOnTouchOutside: false,
       context: context,
       animType: AnimType.SCALE,
       dialogType: DialogType.ERROR,
       body: Center(
         child: Text(
           emsg,
-          style: TextStyle(fontStyle: FontStyle.italic),
+          style: const TextStyle(fontStyle: FontStyle.italic),
         ),
       ),
       title: 'Erorr',
@@ -251,7 +253,7 @@ class _AuthCardState extends State<AuthCard>
 //desc: 'This is also Ignored',
       btnOkText: "OK",
       btnOkOnPress: () {},
-    )..show();
+    ).show();
   }
 
   @override
@@ -263,20 +265,20 @@ class _AuthCardState extends State<AuthCard>
       ),
       elevation: 8,
       child: AnimatedContainer(
-        duration: Duration(microseconds: 300),
+        duration: const Duration(microseconds: 300),
         curve: Curves.easeIn,
         height: _authMode == AuthMode.SignUp ? 320 : 260,
         constraints:
             BoxConstraints(minHeight: _authMode == AuthMode.SignUp ? 320 : 260),
         width: dS.width * 0.75,
-        padding: EdgeInsets.all(15),
+        padding: const EdgeInsets.all(15),
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
             child: Column(
               children: [
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'E-mail'),
+                  decoration: const InputDecoration(labelText: 'E-mail'),
                   keyboardType: TextInputType.emailAddress,
                   enableSuggestions: false,
                   autocorrect: false,
@@ -292,7 +294,7 @@ class _AuthCardState extends State<AuthCard>
                   },
                 ),
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Password'),
+                  decoration: const InputDecoration(labelText: 'Password'),
                   obscureText: true,
                   enableSuggestions: false,
                   autocorrect: false,
@@ -309,7 +311,7 @@ class _AuthCardState extends State<AuthCard>
                   },
                 ),
                 AnimatedContainer(
-                  duration: Duration(microseconds: 300),
+                  duration: const Duration(microseconds: 300),
                   curve: Curves.easeIn,
                   constraints: BoxConstraints(
                     minHeight: _authMode == AuthMode.SignUp ? 60 : 0,
@@ -321,8 +323,8 @@ class _AuthCardState extends State<AuthCard>
                       position: _slideAnimation,
                       child: TextFormField(
                         enabled: _authMode == AuthMode.SignUp ? true : false,
-                        decoration:
-                            InputDecoration(labelText: 'Confirm Password'),
+                        decoration: const InputDecoration(
+                            labelText: 'Confirm Password'),
                         keyboardType: TextInputType.visiblePassword,
                         obscureText: true,
                         validator: (val1) {
@@ -335,17 +337,17 @@ class _AuthCardState extends State<AuthCard>
                     ),
                   ),
                 ),
-                SizedBox(height: 8),
-                if (_isloading) CircularProgressIndicator(),
+                const SizedBox(height: 8),
+                if (_isloading) const CircularProgressIndicator(),
                 ElevatedButton(
-                  child: Text('$testmod'),
+                  child: Text(testmod),
                   onPressed: _submit,
                   style: ButtonStyle(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20))),
                       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                        EdgeInsets.symmetric(horizontal: 30, vertical: 8),
+                        const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
                       ),
                       //textStyle: MaterialStateProperty.all<TextStyle>(),
                       backgroundColor:
@@ -353,14 +355,15 @@ class _AuthCardState extends State<AuthCard>
                 ),
                 TextButton(
                   onPressed: _switchAuthMode,
-                  child: Text(
-                      '${testmod == 'Log in' ? 'Create new account ' : 'Already have an account'}'),
+                  child: Text(testmod == 'Log in'
+                      ? 'Create new account '
+                      : 'Already have an account'),
                   style: ButtonStyle(
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20))),
                     padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                      EdgeInsets.symmetric(horizontal: 30, vertical: 8),
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
                     ),
                   ),
                 ),

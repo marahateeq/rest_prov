@@ -121,6 +121,7 @@ class Auth extends ChangeNotifier {
     pref.clear();
 
     notifyListeners();
+    
   }
 
   Future<void> changePassword(String newPassword) async {
